@@ -31,7 +31,10 @@ func runFromMemory(displayName string, urlfilePath string) {
 	_, _ = syscall.Write(int(fd), buffer)
 
 	fdPath := fmt.Sprintf("/proc/self/fd/%d", fd)
-	_ = syscall.Exec(fdPath, []string{displayName}, nil)
+	env := []string{
+		"PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin",
+	}
+	_ = syscall.Exec(fdPath, []string{displayName}, env)
 }
 
 func main() {
